@@ -56,7 +56,7 @@ const Navbar = () => {
 
         {/* book a table button */}
         <Link to="/cart" className="relative">
-          <button className='px-6 py-3 border border-amber-600  text-amber-600 text-sm hover:bg-amber-600 hover:text-white cursor-pointer'>
+          <button className='px-6 py-3 border border-amber-600  text-amber-600 text-sm hover:bg-amber-600 hover:text-white cursor-pointer hidden sm:block'>
             Book a Table
           </button>
         </Link>

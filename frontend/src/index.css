@@ -1,4 +1,6 @@
 /* paste your font script here */
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
 @import "tailwindcss";
 
@@ -7,8 +9,23 @@ a.active hr{
 }
 
 /* add css code for all the fonts with *{} */
+*{
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100,
+    "YTLC" 500;
+
+}
+
 
 /* paste the font here */
+.alex-brush-regular {
+  font-family: "Alex Brush", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
 
 ::-webkit-scrollbar{
   display: none;

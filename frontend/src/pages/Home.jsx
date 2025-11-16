@@ -4,72 +4,133 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import OurPolicy from '../components/OurPolicy';
 import NewsLetterBox from '../components/NewsLetterBox';
-import { assets } from '../assets/assets';
 import Footer from '../components/Footer';
+import { assets } from '../assets/assets';
+import AboutUs from '../components/AboutUs';
+import FeautredEvents from '../components/FeautredEvents';
+import MenuSection from '../components/MenuSection';
+import MenuPreview from '../components/MenuPreview';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
-  const heroRef = useRef(null);
-  const sectionsRef = useRef(null);
+  const sectionsRef = useRef([]);
 
   useEffect(() => {
-    const hero = heroRef.current;
-    const sections = sectionsRef.current;
+    sectionsRef.current.forEach((section) => {
+      if (!section) return;
 
-    if (!hero || !sections) return;
+      // Skip pinning Newsletter/Footer section
+      if (section.classList.contains("no-pin")) return;
 
-    // Pin the hero section while scrolling through it
-    ScrollTrigger.create({
-      trigger: hero,
-      start: 'top top',
-      end: 'bottom top', // pin until hero fully scrolled
-      pin: true,
-      pinSpacing: false, // spacing handled by content sections
-      scrub: true,
-    });
+      // Special handling for MenuSection (horizontal scroll)
+      if (section.classList.contains("horizontal-scroll")) {
+        const container = section.querySelector(".horizontal-container");
+        if (!container) return;
 
-    // Optional: add parallax to hero background
-    gsap.to(hero.querySelector('.hero-bg'), {
-      scale: 1.1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: hero,
+        const totalScroll = container.scrollWidth - window.innerWidth;
+
+        gsap.to(container, {
+          x: -totalScroll,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${totalScroll}`,
+            scrub: true,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        return; // Skip normal vertical pin
+      }
+
+      // Default vertical pin for other sections
+      ScrollTrigger.create({
+        trigger: section,
         start: 'top top',
         end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
         scrub: true,
-      },
+      });
+
+      // Optional parallax for hero background
+      const bg = section.querySelector('.hero-bg');
+      if (bg) {
+        gsap.to(bg, {
+          scale: 1.1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
     });
   }, []);
 
   return (
     <div className="relative">
       {/* Hero Section */}
-      <div ref={heroRef} className="relative h-screen w-full z-10 overflow-hidden">
-        {/* Background image */}
+      <section
+        ref={(el) => (sectionsRef.current[0] = el)}
+        className="relative h-screen w-full overflow-hidden"
+      >
         <div
           className="hero-bg absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${assets.hero_img})` }}
-        ></div>
-
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 to-transparent"></div>
-
-        {/* Navbar + Hero content */}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 to-transparent" />
         <div className="relative z-20 flex flex-col h-full">
           <Navbar />
           <Hero />
         </div>
-      </div>
+      </section>
 
-      {/* Sections that slide over hero */}
-      <div ref={sectionsRef} className="relative z-30 bg-white">
-        <OurPolicy />
+      {/* About Section */}
+      <section
+        ref={(el) => (sectionsRef.current[1] = el)}
+        className="relative h-screen w-full flex items-center justify-center"
+      >
+        <AboutUs />
+      </section>
+
+      <section
+        ref={(el) => (sectionsRef.current[2] = el)}
+        className="relative h-[200px] w-full flex items-center justify-center"
+      >
+          <MenuPreview/>
+      </section>
+
+      {/* Menu Section (horizontal scroll) */}
+      <section
+        ref={(el) => (sectionsRef.current[2] = el)}
+        className="relative w-full horizontal-scroll"
+      >
+        <MenuSection />
+      </section>
+
+      {/* Featured Events Section */}
+      <section
+        ref={(el) => (sectionsRef.current[3] = el)}
+        className="relative h-screen w-full bg-blue-300 flex flex-col justify-center"
+      >
+        <FeautredEvents />
+      </section>
+
+      {/* Newsletter + Footer */}
+      <section
+        ref={(el) => (sectionsRef.current[4] = el)}
+        className="relative w-full bg-white no-pin"
+      >
         <NewsLetterBox />
-        <Footer/>
-      </div>
+        <Footer />
+      </section>
     </div>
   );
 };
