@@ -8,10 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 // Example: replace with your actual image URLs
 const menuImages = [
   { id: 1,
-    image:assets.food,
     url: assets.woodback, 
     label: "Menu Item 1",
-    description: 'delicious dish 1'
   },
   { id: 2, url: assets.woodback, label: "Menu Item 2" },
   { id: 3, url: assets.woodback, label: "Menu Item 3" },
@@ -63,10 +61,7 @@ const MenuSection = () => {
         {menuImages.map((item) => (
           <div
             key={item.id}
-            className="w-screen h-screen flex-shrink-0 flex items-center justify-center text-white text-3xl font-bold"
-            style={{ backgroundImage: `url(${item.url})` ,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',}}
+            className="w-screen h-screen flex-shrink-0 flex items-center bg-amber-700 justify-center text-white text-3xl font-bold"
           >
             <div>
               <img src={item.image} alt="" className="w-24 h-auto" />

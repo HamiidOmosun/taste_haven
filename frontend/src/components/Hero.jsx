@@ -8,7 +8,7 @@ const Hero = () => {
     <div className="flex flex-col items-center justify-center h-screen w-full px-4 sm:px-0">
       <div
         className="text-white text-3xl font-light text-center"
-        style={{ fontFamily: "'Alex Brush', cursive" }}
+        style={{ fontFamily: '"Alex Brush", cursive' }}
       >
         Welcome to the number one luxury restaurant
       </div>
